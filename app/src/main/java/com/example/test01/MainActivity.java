@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     public static int savedPage = 1;
     int currentPage = 1;
     int totalPages = 1;
-    final int limit = 4;
+    final int limit = 5;
     Button prevBtn;
     Button nextBtn;
     LinearLayout trackContainer;
@@ -93,22 +93,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadPage(int page) {
-        api.getTracks(page, limit).enqueue(new Callback<TrackResponse>() {
+        int userId = getSharedPreferences("prefs", MODE_PRIVATE).getInt("user_id", -1);
+        api.getTracks(userId, page, limit).enqueue(new Callback<TrackResponse>() {
             @Override
             public void onResponse(Call<TrackResponse> call, Response<TrackResponse> response) {
                 if (response.isSuccessful()) {
                     TrackResponse trackResp = response.body();
                     List<Track> tracks = trackResp.data;
+                    List<Integer> followedIds = trackResp.followed_ids;
                     totalPages = (int) Math.ceil((double) trackResp.total / limit);
 
                     trackContainer.removeAllViews();
 
                     for (Track track : tracks) {
                         View itemView = inflater.inflate(R.layout.item_track, trackContainer, false);
+                        ImageButton followBtn = itemView.findViewById(R.id.track_btn_like);
                         TextView title = itemView.findViewById(R.id.title_text);
                         TextView description = itemView.findViewById(R.id.description_text);
+
+                        followBtn.setTag(R.id.track_btn_like, track.id);
+                        followBtn.setTag(R.id.followed_flag, followedIds.contains(track.id));
                         title.setText(track.title);
                         description.setText(track.author + " | mood: " + track.mood);
+
+                        // Change like button icon if liked
+                        if (followedIds.contains(track.id)) {
+                            followBtn.setImageResource(R.drawable.dark_like);
+                        }
+
                         trackContainer.addView(itemView);
                     }
 
@@ -135,9 +147,53 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Like(View v) {
-//        ImageButton like_btn = v.findViewById(R.id.track_btn_react);
-        ImageButton like_btn = (ImageButton)v;
-        like_btn.setImageResource(R.drawable.dark_like);
+        ImageButton likeBtn = (ImageButton) v;
+        Object tag = likeBtn.getTag();
+        if (tag == null) {
+            Toast.makeText(this, "Ошибка: нет ID трека", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int trackId = (int) tag;
+        int userId = getSharedPreferences("prefs", MODE_PRIVATE).getInt("user_id", -1);
+        if (userId == -1) {
+            Toast.makeText(this, "Ошибка: не авторизован", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Follow follow = new Follow(userId, trackId);
+
+        boolean isFollowed = (boolean) likeBtn.getTag(R.id.followed_flag);
+
+        if (isFollowed) {
+            // UNFOLLOW
+            api.sendUnfollow(follow).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    Toast.makeText(MainActivity.this, "Удалено из избранного", Toast.LENGTH_SHORT).show();
+                    likeBtn.setImageResource(R.drawable.like); // светлая иконка
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(MainActivity.this, "Ошибка сети", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            // FOLLOW
+            api.sendFollow(follow).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    Toast.makeText(MainActivity.this, "Сохранено", Toast.LENGTH_SHORT).show();
+                    likeBtn.setImageResource(R.drawable.dark_like); // тёмная иконка
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(MainActivity.this, "Ошибка сети", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     public void ActivityToReactions(View v) {

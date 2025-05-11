@@ -17,8 +17,12 @@ public interface NetApi {
     @POST("/follow")
     Call<Void> sendFollow(@Body Follow follow);
 
+    @POST("/unfollow")
+    Call<Void> sendUnfollow(@Body Follow follow);
+
     @GET("/tracks")
     Call<TrackResponse> getTracks(
+            @Query("user_id") int userId,
             @Query("page") int page,
             @Query("limit") int limit
     );

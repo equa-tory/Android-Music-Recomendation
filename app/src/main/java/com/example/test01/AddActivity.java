@@ -83,6 +83,7 @@ public class AddActivity extends AppCompatActivity {
         }
 
         Track track = new Track(
+            -1,
             fi_title.getText().toString(),
             fi_author.getText().toString(),
             fi_url.getText().toString(),

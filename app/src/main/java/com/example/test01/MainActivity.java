@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                         // Change like button icon if liked
                         if (followedIds.contains(track.id)) {
                             followBtn.setImageResource(R.drawable.dark_like);
+                            followBtn.setOnClickListener(v -> Unlike(v));
                         }
 
                         trackContainer.addView(itemView);
@@ -142,8 +143,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateButtons() {
-        prevBtn.setEnabled(currentPage > 1);
-        nextBtn.setEnabled(currentPage < totalPages);
+        if (totalPages <= 1) {
+            prevBtn.setVisibility(View.GONE);
+            nextBtn.setVisibility(View.GONE);
+        } else {
+            prevBtn.setVisibility(currentPage > 1 ? View.VISIBLE : View.INVISIBLE);
+            nextBtn.setVisibility(currentPage < totalPages ? View.VISIBLE : View.INVISIBLE);
+        }
     }
 
     public void Like(View v) {
@@ -175,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                     likeBtn.setImageResource(R.drawable.dark_like);
                     likeBtn.setOnClickListener(v -> Unlike(v));
                 } else {
-                    Toast.makeText(MainActivity.this, "Уже добавлено", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "Уже добавлено", Toast.LENGTH_SHORT).show();
                 }
             }
 

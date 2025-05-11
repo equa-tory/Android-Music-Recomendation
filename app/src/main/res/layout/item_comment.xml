@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_field_01"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/rounded_background"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:paddingStart="20dp"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center|left">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User1234"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:textColor="@color/w01"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12:04"
+                    android:textSize="16dp"
+                    android:textColor="@color/w01"
+                    android:paddingLeft="5dp"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kasane Teto Kasane Teto Kasane Teto Kasane Teto Kasane Teto Kasane Teto "
+                android:textSize="16dp"
+                android:textColor="@color/w01"/>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

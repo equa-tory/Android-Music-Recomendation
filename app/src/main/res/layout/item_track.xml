@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_field_01"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/rounded_background"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:paddingStart="20dp"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:id="@+id/info_block"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center|left">
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Track Title"
+                android:textStyle="bold"
+                android:textSize="45dp"
+                android:textColor="@color/w01"/>
+            <TextView
+                android:id="@+id/description_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Author or Mood"
+                android:textSize="16dp"
+                android:textColor="@color/w01"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center|right">
+
+            <ImageButton
+                android:id="@+id/track_btn_react"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="10dp"
+                android:background="#00000000"
+                android:contentDescription="-"
+                android:onClick="ActivityToReactions"
+                app:srcCompat="@drawable/reaction" />
+
+            <ImageButton
+                android:id="@+id/track_btn_like"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="10dp"
+                android:background="#00000000"
+                android:contentDescription="-"
+                android:onClick="Like"
+                app:srcCompat="@drawable/like" />
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

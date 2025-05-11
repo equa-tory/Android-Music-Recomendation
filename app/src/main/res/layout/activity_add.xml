@@ -109,7 +109,7 @@
                 android:background="#00000000"
                 android:contentDescription="-"
                 android:onClick="SubmitTrack"
-                app:srcCompat="@drawable/rectangle_2" />
+                app:srcCompat="@drawable/confirm" />
         </LinearLayout>
     </LinearLayout>
 

@@ -29,12 +29,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String serverAdress = "http://10.0.2.2:8000/";
     public static int savedPage = 1;
     int currentPage = 1;
     int totalPages = 1;
     final int limit = 5;
-    Button prevBtn;
-    Button nextBtn;
+    ImageButton prevBtn;
+    ImageButton nextBtn;
     LinearLayout trackContainer;
     LayoutInflater inflater;
     Retrofit retrofit;
@@ -258,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void SubmitUser(View v){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8000/")
+                .baseUrl(serverAdress)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

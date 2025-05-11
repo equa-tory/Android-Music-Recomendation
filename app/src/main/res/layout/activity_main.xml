@@ -83,11 +83,17 @@
             android:gravity="center"
             android:background="@color/d02">
 
-            <Button
+
+
+            <ImageButton
                 android:id="@+id/prev_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="l" />
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:contentDescription="-"
+                android:onClick="ActivityToAdd"
+                app:srcCompat="@drawable/left" />
 
             <ImageButton
                 android:id="@+id/add_button"
@@ -97,13 +103,17 @@
                 android:background="#00000000"
                 android:contentDescription="-"
                 android:onClick="ActivityToAdd"
-                app:srcCompat="@drawable/rectangle_1" />
+                app:srcCompat="@drawable/plus" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/next_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="r" />
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:contentDescription="-"
+                android:onClick="ActivityToAdd"
+                app:srcCompat="@drawable/right" />
         </LinearLayout>
     </LinearLayout>
 

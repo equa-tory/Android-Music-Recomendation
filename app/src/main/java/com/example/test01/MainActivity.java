@@ -111,8 +111,7 @@ public class MainActivity extends AppCompatActivity {
                         TextView title = itemView.findViewById(R.id.title_text);
                         TextView description = itemView.findViewById(R.id.description_text);
 
-                        followBtn.setTag(R.id.track_btn_like, track.id);
-                        followBtn.setTag(R.id.followed_flag, followedIds.contains(track.id));
+                        followBtn.setTag(track.id);
                         title.setText(track.title);
                         description.setText(track.author + " | mood: " + track.mood);
 
@@ -148,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void Like(View v) {
         ImageButton likeBtn = (ImageButton) v;
+
+        // Получаем track_id, сохранённый ранее
         Object tag = likeBtn.getTag();
         if (tag == null) {
             Toast.makeText(this, "Ошибка: нет ID трека", Toast.LENGTH_SHORT).show();
@@ -155,45 +156,32 @@ public class MainActivity extends AppCompatActivity {
         }
 
         int trackId = (int) tag;
-        int userId = getSharedPreferences("prefs", MODE_PRIVATE).getInt("user_id", -1);
+
+        int userId = getSharedPreferences("prefs", MODE_PRIVATE)
+                .getInt("user_id", -1);
         if (userId == -1) {
-            Toast.makeText(this, "Ошибка: не авторизован", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Ошибка: вы не авторизованы", Toast.LENGTH_SHORT).show();
             return;
         }
 
         Follow follow = new Follow(userId, trackId);
 
-        boolean isFollowed = (boolean) likeBtn.getTag(R.id.followed_flag);
+        api.sendFollow(follow).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(MainActivity.this, "Трек сохранён", Toast.LENGTH_SHORT).show();
+                    likeBtn.setImageResource(R.drawable.dark_like);
+                } else {
+                    Toast.makeText(MainActivity.this, "Уже добавлено", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-        if (isFollowed) {
-            // UNFOLLOW
-            api.sendUnfollow(follow).enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
-                    Toast.makeText(MainActivity.this, "Удалено из избранного", Toast.LENGTH_SHORT).show();
-                    likeBtn.setImageResource(R.drawable.like); // светлая иконка
-                }
-
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) {
-                    Toast.makeText(MainActivity.this, "Ошибка сети", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            // FOLLOW
-            api.sendFollow(follow).enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
-                    Toast.makeText(MainActivity.this, "Сохранено", Toast.LENGTH_SHORT).show();
-                    likeBtn.setImageResource(R.drawable.dark_like); // тёмная иконка
-                }
-
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) {
-                    Toast.makeText(MainActivity.this, "Ошибка сети", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Ошибка подключения", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void ActivityToReactions(View v) {

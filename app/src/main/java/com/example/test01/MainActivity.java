@@ -186,9 +186,9 @@ public class MainActivity extends AppCompatActivity {
                 .getString("password", "");
         User user = new User(username, password);
 
-        api.sendUser(user).enqueue(new Callback<Void>() {
+        api.sendUser(user).enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
                     Log.d("SERVER", "Login OK");
                     getSharedPreferences("prefs", MODE_PRIVATE)
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Log.e("SERVER", "FAIL: " + t.getMessage());
                 // Можно показать Toast "Нет подключения"
                 Toast.makeText(getApplicationContext(), "Ошибка соединения с сервером", Toast.LENGTH_SHORT).show();

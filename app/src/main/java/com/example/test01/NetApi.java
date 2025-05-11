@@ -12,7 +12,7 @@ public interface NetApi {
     Call<Void> sendTrack(@Body Track track);
 
     @POST("/user")
-    Call<Void> sendUser(@Body User user);
+    Call<LoginResponse> sendUser(@Body User user);
 
     @POST("/follow")
     Call<Void> sendFollow(@Body Follow follow);

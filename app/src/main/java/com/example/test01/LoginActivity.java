@@ -54,14 +54,15 @@ public class LoginActivity extends AppCompatActivity {
 
         User user = new User(username, password);
 
-        api.sendUser(user).enqueue(new Callback<Void>() {
+        api.sendUser(user).enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    int userId = response.body().user_id;
 
                     getSharedPreferences("prefs", MODE_PRIVATE)
                             .edit()
-//                            .putInt("user_id", userId)
+                            .putInt("user_id", userId)
                             .putString("username", username)
                             .putString("password", password)
                             .putBoolean("isLoggedIn", true)
@@ -77,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Log.e("SERVER", "FAIL: " + t.getMessage());
                 // Можно показать Toast "Нет подключения"
                 Toast.makeText(getApplicationContext(), "Ошибка соединения с сервером", Toast.LENGTH_SHORT).show();

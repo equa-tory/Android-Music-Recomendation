@@ -170,8 +170,48 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Трек сохранён", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "Трек сохранён", Toast.LENGTH_SHORT).show();
                     likeBtn.setImageResource(R.drawable.dark_like);
+                    likeBtn.setOnClickListener(v -> Unlike(v));
+                } else {
+                    Toast.makeText(MainActivity.this, "Уже добавлено", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Ошибка подключения", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    public void Unlike(View v) {
+        ImageButton likeBtn = (ImageButton) v;
+
+        // Получаем track_id, сохранённый ранее
+        Object tag = likeBtn.getTag();
+        if (tag == null) {
+            Toast.makeText(this, "Ошибка: нет ID трека", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int trackId = (int) tag;
+
+        int userId = getSharedPreferences("prefs", MODE_PRIVATE)
+                .getInt("user_id", -1);
+        if (userId == -1) {
+            Toast.makeText(MainActivity.this, "Ошибка: вы не авторизованы", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Follow follow = new Follow(userId, trackId);
+
+        api.sendUnfollow(follow).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+//                    Toast.makeText(MainActivity.this, "Трек больше не сохранён", Toast.LENGTH_SHORT).show();
+                    likeBtn.setImageResource(R.drawable.like);
+                    likeBtn.setOnClickListener(v -> Like(v));
                 } else {
                     Toast.makeText(MainActivity.this, "Уже добавлено", Toast.LENGTH_SHORT).show();
                 }

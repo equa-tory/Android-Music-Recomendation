@@ -1,11 +1,11 @@
 package com.example.test01;
 
 public class User {
-    public String username;
+    public String login;
     public String password;
 
-    public User(String username, String password) {
-        this.username = username;
+    public User(String login, String password) {
+        this.login = login;
         this.password = password;
     }
 }

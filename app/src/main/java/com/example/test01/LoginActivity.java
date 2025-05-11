@@ -25,11 +25,11 @@ public class LoginActivity extends AppCompatActivity {
 //        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
         // ============================================
-        View fieldUsername = findViewById(R.id.item_field_01);
+        View fieldLogin = findViewById(R.id.item_field_01);
         View fieldPass = findViewById(R.id.item_field_02);
 
-        TextView fi_username = fieldUsername.findViewById(R.id.field_title);
-        fi_username.setText("Username");
+        TextView fi_login = fieldLogin.findViewById(R.id.field_title);
+        fi_login.setText("Login");
 
         TextView fi_pass = fieldPass.findViewById(R.id.field_title);
         fi_pass.setText("Password");
@@ -43,16 +43,16 @@ public class LoginActivity extends AppCompatActivity {
 
         NetApi api = retrofit.create(NetApi.class);
 
-        View fieldItemUsername = findViewById(R.id.item_field_01);
+        View fieldItemLogin = findViewById(R.id.item_field_01);
         View fieldItemPassword = findViewById(R.id.item_field_02);
 
-        EditText fi_username = fieldItemUsername.findViewById(R.id.field_edittext);
+        EditText fi_login = fieldItemLogin.findViewById(R.id.field_edittext);
         EditText fi_password = fieldItemPassword.findViewById(R.id.field_edittext);
 
-        String username = fi_username.getText().toString();
+        String login = fi_login.getText().toString();
         String password = fi_password.getText().toString();
 
-        User user = new User(username, password);
+        User user = new User(login, password);
 
         api.sendUser(user).enqueue(new Callback<LoginResponse>() {
             @Override
@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                     getSharedPreferences("prefs", MODE_PRIVATE)
                             .edit()
                             .putInt("user_id", userId)
-                            .putString("username", username)
+                            .putString("username", login)
                             .putString("password", password)
                             .putBoolean("isLoggedIn", true)
                             .apply();

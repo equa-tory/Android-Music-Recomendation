@@ -2,6 +2,7 @@ package com.example.test01;
 
 import android.content.Intent;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,11 +30,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String serverAdress = "http://10.0.2.2:8000/";
     public static int savedPage = 1;
     int currentPage = 1;
     int totalPages = 1;
-    final int limit = 5;
+    final int limit = 10;
     ImageButton prevBtn;
     ImageButton nextBtn;
     LinearLayout trackContainer;
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         prevBtn = findViewById(R.id.prev_button);
         nextBtn = findViewById(R.id.next_button);
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8000/") // важно! для эмулятора Android = localhost
+                .baseUrl(ServerConfig.SERVER_ADDRESS) // важно! для эмулятора Android = localhost
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         api = retrofit.create(NetApi.class);
@@ -109,12 +109,29 @@ public class MainActivity extends AppCompatActivity {
                     for (Track track : tracks) {
                         View itemView = inflater.inflate(R.layout.item_track, trackContainer, false);
                         ImageButton followBtn = itemView.findViewById(R.id.track_btn_like);
+                        LinearLayout infoBlock = itemView.findViewById(R.id.info_block);
                         TextView title = itemView.findViewById(R.id.title_text);
                         TextView description = itemView.findViewById(R.id.description_text);
 
                         followBtn.setTag(track.id);
                         title.setText(track.title);
-                        description.setText(track.author + " | mood: " + track.mood);
+//                        description.setText(track.author + " | mood: " + track.mood);
+                        String mood = "";
+                        String[] moodLabels = {"Chill", "Drive", "Casual", "Rock", "Christmas"};
+                        mood = moodLabels[track.mood];
+                        description.setText(track.author + " | " + mood);
+
+                            infoBlock.setOnClickListener(v -> {
+                                try{
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(track.url));
+                                    v.getContext().startActivity(intent);
+                                } catch (Exception e){
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/results?search_query="+track.title+"+-+"+track.author));
+                                    v.getContext().startActivity(intent);
+//                                    Toast.makeText(itemView.getContext(), "Невозможно открыть ссылку", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
 
                         // Change like button icon if liked
                         if (followedIds.contains(track.id)) {
@@ -127,6 +144,8 @@ public class MainActivity extends AppCompatActivity {
 
                     updateButtons();
                 }
+                View list_offset = inflater.inflate(R.layout.list_offset, trackContainer, false);
+                trackContainer.addView(list_offset);
             }
 
             @Override
@@ -265,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void SubmitUser(View v){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(serverAdress)
+                .baseUrl(ServerConfig.SERVER_ADDRESS)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

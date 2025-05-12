@@ -7,12 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <GridLayout
         android:id="@+id/grid_main"
         android:background="@color/d03"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:columnCount="1"
+        android:rowCount="4">
 
         <LinearLayout
             android:id="@+id/grid_header"
@@ -20,7 +22,8 @@
             android:layout_height="120dp"
             android:background="@color/d02"
             android:orientation="horizontal"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:layout_row="0">
 
             <ImageButton
                 android:id="@+id/back_button"
@@ -67,6 +70,13 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/d04"
+            android:layout_gravity="bottom|center"
+            android:layout_row="1"/>
+
         <LinearLayout
             android:id="@+id/grid_list"
             android:layout_width="match_parent"
@@ -74,7 +84,10 @@
             android:layout_height="0dp"
             android:orientation="vertical"
             android:gravity="center|top"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:layout_row="2"
+            android:layout_rowSpan="2"
+            android:layout_gravity="fill">
 
             <include
                 layout="@layout/item_comment"
@@ -91,8 +104,10 @@
             android:layout_height="120dp"
             android:orientation="horizontal"
             android:gravity="center"
-            android:background="@color/d02"
-            android:padding="20dp">
+            android:background="@drawable/gradient_footer"
+            android:padding="20dp"
+            android:layout_row="3"
+            android:layout_column="0">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -117,6 +132,6 @@
                     android:background="#00000000"/>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

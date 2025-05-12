@@ -40,6 +40,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="-"
+                android:visibility="visible"
+                android:background="@drawable/ic_launcher_background_edittext"/>
+            <Spinner
+                android:id="@+id/field_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
                 android:background="@drawable/ic_launcher_background_edittext"/>
         </LinearLayout>
     </LinearLayout>

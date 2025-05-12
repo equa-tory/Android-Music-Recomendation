@@ -19,6 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void SubmitUser(View v){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8000/")
+                .baseUrl(ServerConfig.SERVER_ADDRESS)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

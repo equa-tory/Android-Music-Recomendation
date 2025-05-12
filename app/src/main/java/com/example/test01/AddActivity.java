@@ -1,11 +1,16 @@
 package com.example.test01;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -21,6 +26,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AddActivity extends AppCompatActivity {
+
     View fieldItemTitle;
     View fieldItemAuthor;
     View fieldItemUrl;
@@ -45,13 +51,22 @@ public class AddActivity extends AppCompatActivity {
         fi_author_title.setText("Author");
 
         TextView fi_url_title = fieldItemUrl.findViewById(R.id.field_title);
-        fi_url_title.setText("Url");
+        fi_url_title.setText("Url*");
 
         TextView fi_mood_title = fieldItemMood.findViewById(R.id.field_title);
-        fi_mood_title.setText("Mood");
+        fi_mood_title.setText("Mood*");
+        //
+        Spinner spinner = fieldItemMood.findViewById(R.id.field_spinner);
+        fieldItemMood.findViewById(R.id.field_edittext).setVisibility(GONE);
+        spinner.setVisibility(VISIBLE);
+        //
+        String[] moodLabels = {"Chill", "Drive", "Casual", "Rock", "Christmas"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, moodLabels);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
 
         TextView fi_comment_title = fieldItemComment.findViewById(R.id.field_title);
-        fi_comment_title.setText("Comment");
+        fi_comment_title.setText("Comment*");
     }
 
     public void ActivityToMain(View v) {
@@ -61,7 +76,7 @@ public class AddActivity extends AppCompatActivity {
 
     public void SubmitTrack(View v){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8000/") // важно! для эмулятора Android = localhost
+                .baseUrl(ServerConfig.SERVER_ADDRESS) // важно! для эмулятора Android = localhost
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -72,7 +87,7 @@ public class AddActivity extends AppCompatActivity {
         EditText fi_title = fieldItemTitle.findViewById(R.id.field_edittext);
         EditText fi_author = fieldItemAuthor.findViewById(R.id.field_edittext);
         EditText fi_url = fieldItemUrl.findViewById(R.id.field_edittext);
-        EditText fi_mood = fieldItemMood.findViewById(R.id.field_edittext);
+        Spinner fi_mood = fieldItemMood.findViewById(R.id.field_spinner);
         EditText fi_comment = fieldItemComment.findViewById(R.id.field_edittext);
 
         int userId = getSharedPreferences("prefs", MODE_PRIVATE)
@@ -87,7 +102,8 @@ public class AddActivity extends AppCompatActivity {
             fi_title.getText().toString(),
             fi_author.getText().toString(),
             fi_url.getText().toString(),
-            Integer.parseInt(fi_mood.getText().toString()),
+//            Integer.parseInt(fi_mood.getText().toString()),
+            fi_mood.getSelectedItemPosition(),
             fi_comment.getText().toString(),
             userId
         );

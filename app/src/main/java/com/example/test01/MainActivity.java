@@ -1,5 +1,8 @@
 package com.example.test01;
 
+
+import com.example.test01.PasswordUtil;
+
 import android.content.Intent;
 import android.media.Image;
 import android.net.Uri;
@@ -294,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
                 .getString("username", "");
         String password = getSharedPreferences("prefs", MODE_PRIVATE)
                 .getString("password", "");
-        User user = new User(username, password);
+        User user = new User(username, PasswordUtil.hashPassword(password));
 
         api.sendUser(user).enqueue(new Callback<LoginResponse>() {
             @Override

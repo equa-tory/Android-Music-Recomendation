@@ -9,7 +9,7 @@
 
     <GridLayout
         android:id="@+id/grid_main"
-        android:background="@color/d03"
+        android:background="@color/d02"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -70,12 +70,12 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/d04"
-            android:layout_gravity="bottom|center"
-            android:layout_row="1"/>
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:background="@color/d04"-->
+<!--            android:layout_gravity="bottom|center"-->
+<!--            android:layout_row="1"/>-->
 
         <LinearLayout
             android:id="@+id/grid_list"

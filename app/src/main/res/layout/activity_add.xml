@@ -9,7 +9,7 @@
 
     <GridLayout
         android:id="@+id/grid_main"
-        android:background="@color/d03"
+        android:background="@color/d02"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -58,53 +58,55 @@
                     app:srcCompat="@drawable/profile"
                     android:contentDescription="-"
                     android:background="#00000000"/>
-
-                <ImageButton
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="#00000000"
-                    android:contentDescription="-"
-                    app:srcCompat="@drawable/like" />
             </LinearLayout>
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/d04"
-            android:layout_gravity="bottom|center"
-            android:layout_row="1"/>
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:background="@color/d04"-->
+<!--            android:layout_gravity="bottom|center"-->
+<!--            android:layout_row="1"/>-->
 
-        <LinearLayout
-            android:id="@+id/grid_list"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_weight="1"
             android:layout_height="0dp"
-            android:orientation="vertical"
-            android:gravity="center|top"
-            android:padding="10dp"
-            android:layout_row="2"
             android:layout_rowSpan="2"
+            android:layout_row="2"
             android:layout_gravity="fill">
+            <LinearLayout
+                android:id="@+id/grid_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center|top"
+                android:padding="10dp">
 
-            <include
-                layout="@layout/item_field"
-                android:id="@+id/item_field_01"/>
-            <include
-                layout="@layout/item_field"
-                android:id="@+id/item_field_02"/>
-            <include
-                layout="@layout/item_field"
-                android:id="@+id/item_field_03"/>
-            <include
-                layout="@layout/item_field"
-                android:id="@+id/item_field_04"/>
-            <include
-                layout="@layout/item_field"
-                android:id="@+id/item_field_05"/>
-        </LinearLayout>
+                <include
+                    layout="@layout/item_field"
+                    android:id="@+id/item_field_01"/>
+                <include
+                    layout="@layout/item_field"
+                    android:id="@+id/item_field_02"/>
+                <include
+                    layout="@layout/item_field"
+                    android:id="@+id/item_field_03"/>
+                <include
+                    layout="@layout/item_field"
+                    android:id="@+id/item_field_04"/>
+                <include
+                    layout="@layout/item_field"
+                    android:id="@+id/item_field_05"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/transparent" />
+            </LinearLayout>
+        </ScrollView>
 
         <LinearLayout
             android:id="@+id/grid_footer"

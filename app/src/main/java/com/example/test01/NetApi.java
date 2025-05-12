@@ -24,6 +24,7 @@ public interface NetApi {
     Call<TrackResponse> getTracks(
             @Query("user_id") int userId,
             @Query("page") int page,
-            @Query("limit") int limit
+            @Query("limit") int limit,
+            @Query("sort") String sort
     );
 }

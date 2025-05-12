@@ -4,7 +4,7 @@
     <item>
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle">
-            <solid android:color="@color/d04" /> <!-- фон -->
+            <solid android:color="@color/d03" /> <!-- фон -->
             <corners android:radius="16dp" />    <!-- радиус скругления -->
         </shape>
     </item>

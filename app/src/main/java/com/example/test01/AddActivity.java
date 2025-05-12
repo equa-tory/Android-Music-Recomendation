@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.test01.MoodLabels;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,14 +57,13 @@ public class AddActivity extends AppCompatActivity {
         fi_url_title.setText("Url*");
 
         TextView fi_mood_title = fieldItemMood.findViewById(R.id.field_title);
-        fi_mood_title.setText("Mood*");
+        fi_mood_title.setText("Mood");
         //
         Spinner spinner = fieldItemMood.findViewById(R.id.field_spinner);
         fieldItemMood.findViewById(R.id.field_edittext).setVisibility(GONE);
         spinner.setVisibility(VISIBLE);
         //
-        String[] moodLabels = {"Chill", "Drive", "Casual", "Rock", "Christmas"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, moodLabels);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, MoodLabels.labels);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -95,6 +97,23 @@ public class AddActivity extends AppCompatActivity {
         if (userId == -1) {
             Log.e("TRACK", "No user_id found in SharedPreferences");
             return; // не продолжаем без пользователя
+        }
+
+        String title = fi_title.getText().toString().trim();
+        String author = fi_author.getText().toString().trim();
+        String url = fi_url.getText().toString().trim();
+
+        if (title.length() < 2 || title.length() > 30) {
+            Toast.makeText(this, "Title must be 2–30 characters", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (author.length() < 2 || author.length() > 22) {
+            Toast.makeText(this, "Author must be 2–22 characters", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (url.length() > 120) {
+            Toast.makeText(this, "URL too long", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         Track track = new Track(

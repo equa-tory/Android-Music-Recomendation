@@ -9,6 +9,7 @@ public class Track {
     public String url;
     public int mood;
     public String comment;
+    public String timestamp;
     public int user_id;
 
     public Track(int id, String title, String author, String url, int mood, String comment, int user_id) {

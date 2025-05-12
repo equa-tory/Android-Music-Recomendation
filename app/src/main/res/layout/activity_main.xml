@@ -9,7 +9,7 @@
 
     <GridLayout
         android:id="@+id/grid_main"
-        android:background="@color/d03"
+        android:background="@color/d02"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="bottom"
-                android:text="Luno"
+                android:text="Loono"
                 android:textColor="@color/w01"
                 android:textSize="45dp"
                 android:textStyle="bold" />
@@ -50,21 +50,22 @@
                     android:background="#00000000"/>
 
                 <ImageButton
+                    android:id="@+id/sort_button"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="10dp"
                     android:background="#00000000"
                     android:contentDescription="-"
-                    app:srcCompat="@drawable/like" />
+                    app:srcCompat="@drawable/sort" />
             </LinearLayout>
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/d04"
-            android:layout_gravity="bottom|center"
-            android:layout_row="1"/>
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:background="@color/d04"-->
+<!--            android:layout_gravity="bottom|center"-->
+<!--            android:layout_row="1"/>-->
 
         <ScrollView
             android:layout_width="match_parent"

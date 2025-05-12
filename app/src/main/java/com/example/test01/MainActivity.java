@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +24,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.test01.MoodLabels;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     int currentPage = 1;
     int totalPages = 1;
     final int limit = 10;
+    String currentSort = "none";
     ImageButton prevBtn;
     ImageButton nextBtn;
     LinearLayout trackContainer;
@@ -82,23 +91,71 @@ public class MainActivity extends AppCompatActivity {
         prevBtn.setOnClickListener(v -> {
             if (currentPage > 1) {
                 currentPage--;
-                loadPage(currentPage);
+                loadPage(currentPage, currentSort);
             }
         });
 
         nextBtn.setOnClickListener(v -> {
             if (currentPage < totalPages) {
                 currentPage++;
-                loadPage(currentPage);
+                loadPage(currentPage, currentSort);
             }
         });
 
-        loadPage(currentPage);
+        ImageButton sortButton = findViewById(R.id.sort_button);
+        sortButton.setOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(MainActivity.this, v);
+            popup.getMenu().add("Creation Date");
+//            popup.getMenu().add("By mood");// TODO redo
+            popup.getMenu().add("Followed");
+            popup.getMenu().add("Most popular");
+            popup.getMenu().add("Music of the week");
+            for (String moodString :
+                    MoodLabels.labels) {
+                popup.getMenu().add(moodString);
+            }
+
+            popup.setOnMenuItemClickListener(item -> {
+                String selected = item.getTitle().toString().toLowerCase();
+
+                // fixing the duplicates
+                String lastSort = currentSort;
+                switch (selected){
+                    case "creation date": {
+                        currentSort = "none";
+                        break;
+                    }
+                    case "by mood": {
+                        currentSort = "mood";
+                        break;
+                    }
+                    case "followed": {
+                        currentSort = "followed";
+                        break;
+                    }
+                    case "most popular": {
+                        currentSort = "popular";
+                        break;
+                    }
+                    case "music of the week": {
+                        currentSort = "week";
+                        break;
+                    }
+                }
+//                currentSort = selected; // переменная сортировки
+                if(!Objects.equals(lastSort, currentSort)) loadPage(1, currentSort); // загружаем с первой страницы
+                return true;
+            });
+
+            popup.show();
+        });
+
+        loadPage(currentPage, currentSort);
     }
 
-    public void loadPage(int page) {
+    public void loadPage(int page, String sortingType) {
         int userId = getSharedPreferences("prefs", MODE_PRIVATE).getInt("user_id", -1);
-        api.getTracks(userId, page, limit).enqueue(new Callback<TrackResponse>() {
+        api.getTracks(userId, page, limit, sortingType).enqueue(new Callback<TrackResponse>() {
             @Override
             public void onResponse(Call<TrackResponse> call, Response<TrackResponse> response) {
                 if (response.isSuccessful()) {
@@ -115,16 +172,28 @@ public class MainActivity extends AppCompatActivity {
                         LinearLayout infoBlock = itemView.findViewById(R.id.info_block);
                         TextView title = itemView.findViewById(R.id.title_text);
                         TextView description = itemView.findViewById(R.id.description_text);
+                        TextView date = itemView.findViewById(R.id.date_text);
 
                         followBtn.setTag(track.id);
                         title.setText(track.title);
 //                        description.setText(track.author + " | mood: " + track.mood);
                         String mood = "";
-                        String[] moodLabels = {"Chill", "Drive", "Casual", "Rock", "Christmas"};
-                        mood = moodLabels[track.mood];
+                        mood = MoodLabels.labels[track.mood];
                         description.setText(track.author + " | " + mood);
+                        //
+                        SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                        SimpleDateFormat displayFormat = new SimpleDateFormat("yy/MM/dd - HH:mm");
+                        SimpleDateFormat displayFormat = new SimpleDateFormat("dd MMMM, HH:mm", new Locale("ru"));
 
-                            infoBlock.setOnClickListener(v -> {
+                        try {
+                            Date parsedDate = serverFormat.parse(track.timestamp);
+                            String formattedDate = displayFormat.format(parsedDate);
+                            date.setText(formattedDate);
+                        } catch (ParseException e) {
+                            date.setText("invalid date");
+                        }
+
+                        infoBlock.setOnClickListener(v -> {
                                 try{
                                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(track.url));
                                     v.getContext().startActivity(intent);
@@ -138,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
 
                         // Change like button icon if liked
                         if (followedIds.contains(track.id)) {
-                            followBtn.setImageResource(R.drawable.dark_like);
+                            followBtn.setImageResource(R.drawable.dark_follow);
                             followBtn.setOnClickListener(v -> Unlike(v));
                         }
 
@@ -200,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
 //                    Toast.makeText(MainActivity.this, "Трек сохранён", Toast.LENGTH_SHORT).show();
-                    likeBtn.setImageResource(R.drawable.dark_like);
+                    likeBtn.setImageResource(R.drawable.dark_follow);
                     likeBtn.setOnClickListener(v -> Unlike(v));
                 } else {
 //                    Toast.makeText(MainActivity.this, "Уже добавлено", Toast.LENGTH_SHORT).show();
@@ -239,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
 //                    Toast.makeText(MainActivity.this, "Трек больше не сохранён", Toast.LENGTH_SHORT).show();
-                    likeBtn.setImageResource(R.drawable.like);
+                    likeBtn.setImageResource(R.drawable.follow);
                     likeBtn.setOnClickListener(v -> Like(v));
                 } else {
                     Toast.makeText(MainActivity.this, "Уже добавлено", Toast.LENGTH_SHORT).show();

@@ -78,6 +78,7 @@
                     android:layout_marginLeft="10dp"
                     android:background="#00000000"
                     android:contentDescription="-"
+                    android:visibility="gone"
                     app:srcCompat="@drawable/sort" />
             </LinearLayout>
         </LinearLayout>

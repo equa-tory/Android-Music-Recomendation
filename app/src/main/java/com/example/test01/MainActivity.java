@@ -1,6 +1,8 @@
 package com.example.test01;
 
 
+import static android.view.View.VISIBLE;
+
 import com.example.test01.PasswordUtil;
 
 import android.content.Intent;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -178,12 +181,15 @@ public class MainActivity extends AppCompatActivity {
                     for (Track track : tracks) {
                         View itemView = inflater.inflate(R.layout.item_track, trackContainer, false);
                         ImageButton followBtn = itemView.findViewById(R.id.track_btn_like);
+                        ImageButton reportBtn = itemView.findViewById(R.id.track_btn_rep);
                         LinearLayout infoBlock = itemView.findViewById(R.id.info_block);
                         TextView title = itemView.findViewById(R.id.title_text);
                         TextView description = itemView.findViewById(R.id.description_text);
                         TextView date = itemView.findViewById(R.id.date_text);
+                        TextView comment = itemView.findViewById(R.id.comment_text);
 
                         followBtn.setTag(track.id);
+                        reportBtn.setTag(track.id);
                         title.setText(track.title);
 //                        description.setText(track.author + " | mood: " + track.mood);
                         // Получаем название настроения по id через MoodLabels
@@ -200,6 +206,12 @@ public class MainActivity extends AppCompatActivity {
                             date.setText(formattedDate);
                         } catch (ParseException e) {
                             date.setText("invalid date");
+                        }
+
+                        String commentText = track.comment;
+                        if(!commentText.isEmpty()) {
+                            comment.setVisibility(VISIBLE);
+                            comment.setText("\"" +commentText+'"');
                         }
 
                         infoBlock.setOnClickListener(v -> {
@@ -246,9 +258,48 @@ public class MainActivity extends AppCompatActivity {
             prevBtn.setVisibility(View.GONE);
             nextBtn.setVisibility(View.GONE);
         } else {
-            prevBtn.setVisibility(currentPage > 1 ? View.VISIBLE : View.INVISIBLE);
-            nextBtn.setVisibility(currentPage < totalPages ? View.VISIBLE : View.INVISIBLE);
+            prevBtn.setVisibility(currentPage > 1 ? VISIBLE : View.INVISIBLE);
+            nextBtn.setVisibility(currentPage < totalPages ? VISIBLE : View.INVISIBLE);
         }
+    }
+
+    public void Report(View v) {
+        ImageButton reportBtn = (ImageButton) v;
+        Object tag = reportBtn.getTag();
+        if (tag == null) {
+            Toast.makeText(this, "Ошибка: нет ID трека", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int trackId = (int) tag;
+        int userId = getSharedPreferences("prefs", MODE_PRIVATE).getInt("user_id", -1);
+        if (userId == -1) {
+            Toast.makeText(this, "Ошибка: вы не авторизованы", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String[] reasons = {"Неприемлемое содержимое", "Спам", "Неверная информация", "Другое"};
+        new AlertDialog.Builder(this)
+            .setTitle("Пожаловаться на трек")
+            .setItems(reasons, (dialog, which) -> {
+                String selectedReason = reasons[which];
+                Report report = new Report(userId, trackId, selectedReason);
+                api.sendReport(report).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            Toast.makeText(MainActivity.this, "Жалоба отправлена", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "Не удалось отправить жалобу", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(MainActivity.this, "Ошибка подключения", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }).show();
     }
 
     public void Like(View v) {

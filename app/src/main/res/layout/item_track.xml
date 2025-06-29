@@ -24,6 +24,14 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center|left">
+<!--            <TextView-->
+<!--                android:id="@+id/comment_text"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Comment here"-->
+<!--                android:textSize="35dp"-->
+<!--                android:textColor="@color/w01"-->
+<!--                android:layout_marginTop="4dp" />-->
 
             <TextView
                 android:id="@+id/date_text"
@@ -38,6 +46,14 @@
                 android:layout_height="0.65dp"
                 android:background="@color/w02"
                 android:layout_gravity="bottom|center"/>
+<!--            <TextView-->
+<!--                android:id="@+id/comment_text"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Comment here"-->
+<!--                android:textSize="35dp"-->
+<!--                android:textColor="@color/w01"-->
+<!--                android:layout_marginTop="4dp" />-->
 
             <TextView
                 android:id="@+id/title_text"
@@ -54,12 +70,22 @@
                 android:text="Author | Mood"
                 android:textSize="16dp"
                 android:textColor="@color/w01"/>
+            <TextView
+                android:id="@+id/comment_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="'Comment here'"
+                android:visibility="gone"
+                android:textSize="35dp"
+                android:textColor="@color/w02"
+                android:textStyle="italic"
+                android:layout_marginTop="4dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:gravity="center|right">
 
 <!--            <ImageButton-->
@@ -81,6 +107,16 @@
                 android:onClick="Delete"
                 android:visibility="gone"
                 app:srcCompat="@drawable/x" />
+            <ImageButton
+                android:id="@+id/track_btn_rep"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="10dp"
+                android:background="#00000000"
+                android:contentDescription="-"
+                android:onClick="Report"
+                android:visibility="visible"
+                app:srcCompat="@drawable/report" />
             <ImageButton
                 android:id="@+id/track_btn_like"
                 android:layout_width="48dp"

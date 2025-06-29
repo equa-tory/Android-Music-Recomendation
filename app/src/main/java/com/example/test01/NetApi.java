@@ -34,4 +34,7 @@ public interface NetApi {
 
     @GET("/moods")
     Call<List<Mood>> getMoods();
+
+    @POST("/report")
+    Call<Void> sendReport(@Body Report report);
 }

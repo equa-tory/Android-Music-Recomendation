@@ -126,6 +126,7 @@ public class ProfileActivity extends AppCompatActivity {
                         View itemView = inflater.inflate(R.layout.item_track, trackContainer, false);
                         ImageButton followBtn = itemView.findViewById(R.id.track_btn_like);
                         ImageButton xButton = itemView.findViewById(R.id.track_btn_x);
+                        ImageButton reportButton = itemView.findViewById(R.id.track_btn_rep);
                         LinearLayout infoBlock = itemView.findViewById(R.id.info_block);
                         TextView title = itemView.findViewById(R.id.title_text);
                         TextView description = itemView.findViewById(R.id.description_text);
@@ -135,6 +136,7 @@ public class ProfileActivity extends AppCompatActivity {
                         xButton.setTag(track.id);
 //                        followBtn.setVisibility(GONE);
                         xButton.setVisibility(VISIBLE);
+                        xButton.setVisibility(GONE);
                         title.setText(track.title);
                         String mood = MoodLabels.getLabelById(track.mood_id);
                         description.setText(track.author + " | " + mood);

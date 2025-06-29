@@ -41,7 +41,7 @@
                 android:layout_height="match_parent"
                 android:hint="."
                 android:backgroundTint="@color/d04"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:textColor="@color/w01"
                 android:background="@drawable/ic_launcher_background_edittext"/>
             <Spinner
@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/d04"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:background="@drawable/ic_launcher_background_edittext"/>
         </LinearLayout>
     </LinearLayout>

@@ -62,16 +62,25 @@
             android:orientation="horizontal"
             android:gravity="center|right">
 
+<!--            <ImageButton-->
+<!--                android:id="@+id/track_btn_react"-->
+<!--                android:layout_width="48dp"-->
+<!--                android:layout_height="48dp"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:background="#00000000"-->
+<!--                android:contentDescription="-"-->
+<!--                android:onClick="ActivityToReactions"-->
+<!--                app:srcCompat="@drawable/reaction" />-->
             <ImageButton
-                android:id="@+id/track_btn_react"
+                android:id="@+id/track_btn_x"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginLeft="10dp"
                 android:background="#00000000"
                 android:contentDescription="-"
-                android:onClick="ActivityToReactions"
-                app:srcCompat="@drawable/reaction" />
-
+                android:onClick="Delete"
+                android:visibility="gone"
+                app:srcCompat="@drawable/x" />
             <ImageButton
                 android:id="@+id/track_btn_like"
                 android:layout_width="48dp"
@@ -80,6 +89,7 @@
                 android:background="#00000000"
                 android:contentDescription="-"
                 android:onClick="Like"
+                android:visibility="visible"
                 app:srcCompat="@drawable/follow" />
         </LinearLayout>
     </LinearLayout>

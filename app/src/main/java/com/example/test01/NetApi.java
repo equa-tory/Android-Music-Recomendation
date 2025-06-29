@@ -25,6 +25,10 @@ public interface NetApi {
             @Query("user_id") int userId,
             @Query("page") int page,
             @Query("limit") int limit,
-            @Query("sort") String sort
+            @Query("sort") String sort,
+            @Query("profile") Boolean profile
     );
+
+    @POST("/delete")
+    Call<Void> deleteTrack(@Body DeleteRequest request);
 }

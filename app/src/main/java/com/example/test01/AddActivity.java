@@ -141,4 +141,9 @@ public class AddActivity extends AppCompatActivity {
 
         ActivityToMain(v);
     }
+
+    public void Profile(View v){
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+    }
 }

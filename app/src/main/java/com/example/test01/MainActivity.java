@@ -141,6 +141,26 @@ public class MainActivity extends AppCompatActivity {
                         currentSort = "week";
                         break;
                     }
+                    case "\uD83D\uDCA5 drive": {
+                        currentSort = "mood:0";
+                        break;
+                    }
+                    case "🛋️ chill": {
+                        currentSort = "mood:1";
+                        break;
+                    }
+                    case "\uD83D\uDC94 sad": {
+                        currentSort = "mood:2";
+                        break;
+                    }
+                    case "❄ christmas": {
+                        currentSort = "mood:3";
+                        break;
+                    }
+                    case "\uD83D\uDC7B other": {
+                        currentSort = "mood:4";
+                        break;
+                    }
                 }
 //                currentSort = selected; // переменная сортировки
                 if(!Objects.equals(lastSort, currentSort)) loadPage(1, currentSort); // загружаем с первой страницы
@@ -155,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadPage(int page, String sortingType) {
         int userId = getSharedPreferences("prefs", MODE_PRIVATE).getInt("user_id", -1);
-        api.getTracks(userId, page, limit, sortingType).enqueue(new Callback<TrackResponse>() {
+        api.getTracks(userId, page, limit, sortingType, false).enqueue(new Callback<TrackResponse>() {
             @Override
             public void onResponse(Call<TrackResponse> call, Response<TrackResponse> response) {
                 if (response.isSuccessful()) {
@@ -194,16 +214,15 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         infoBlock.setOnClickListener(v -> {
-                                try{
-                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(track.url));
-                                    v.getContext().startActivity(intent);
-                                } catch (Exception e){
-                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/results?search_query="+track.title+"+-+"+track.author));
-                                    v.getContext().startActivity(intent);
-//                                    Toast.makeText(itemView.getContext(), "Невозможно открыть ссылку", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
+                            try{
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(track.url));
+                                v.getContext().startActivity(intent);
+                            } catch (Exception e){
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/results?search_query="+track.title+"+-+"+track.author));
+                                v.getContext().startActivity(intent);
+//                                Toast.makeText(itemView.getContext(), "Невозможно открыть ссылку", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
                         // Change like button icon if liked
                         if (followedIds.contains(track.id)) {
@@ -344,6 +363,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void Profile(View v){
+        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+        startActivity(intent);
+    }
     public void LogOut(View v){
         getSharedPreferences("prefs", MODE_PRIVATE)
                 .edit()

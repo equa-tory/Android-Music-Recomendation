@@ -54,6 +54,11 @@ public class LoginActivity extends AppCompatActivity {
         String login = fi_login.getText().toString();
         String password = fi_password.getText().toString();
 
+        if (login.length() < 2 || login.length() > 16 || password.length() < 2 || password.length() > 16) {
+            Toast.makeText(getApplicationContext(), "Login and password must be 2–16 characters", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         User user = new User(login, PasswordUtil.hashPassword(password));
 
         api.sendUser(user).enqueue(new Callback<LoginResponse>() {

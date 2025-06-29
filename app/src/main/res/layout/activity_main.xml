@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="bottom"
-                android:text="Loono"
+                android:text="@string/app_name"
                 android:textColor="@color/w01"
                 android:textSize="45dp"
                 android:textStyle="bold" />
@@ -46,7 +46,7 @@
                     android:layout_marginLeft="10dp"
                     app:srcCompat="@drawable/profile"
                     android:contentDescription="-"
-                    android:onClick="LogOut"
+                    android:onClick="Profile"
                     android:background="#00000000"/>
 
                 <ImageButton
@@ -115,7 +115,6 @@
                 android:layout_weight="1"
                 android:background="#00000000"
                 android:contentDescription="-"
-                android:onClick="ActivityToAdd"
                 app:srcCompat="@drawable/left" />
 
             <ImageButton
@@ -135,7 +134,6 @@
                 android:layout_weight="1"
                 android:background="#00000000"
                 android:contentDescription="-"
-                android:onClick="ActivityToAdd"
                 app:srcCompat="@drawable/right" />
         </LinearLayout>
     </GridLayout>

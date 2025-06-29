@@ -5,7 +5,7 @@
     android:id="@+id/add"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ProfileActivity">
 
     <GridLayout
         android:id="@+id/grid_main"
@@ -36,14 +36,25 @@
                 android:onClick="ActivityToMain"
                 app:srcCompat="@drawable/back" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="bottom"
-                android:text="Add"
-                android:textColor="@color/w01"
-                android:textSize="45dp"
-                android:textStyle="bold" />
+                android:orientation="vertical"
+                android:gravity="bottom">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile"
+                    android:textColor="@color/w01"
+                    android:textSize="45dp"
+                    android:textStyle="bold"/>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="My Posts"-->
+<!--                    android:textColor="@color/w02"-->
+<!--                    android:textSize="16dp"/>-->
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -55,20 +66,28 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="10dp"
-                    app:srcCompat="@drawable/profile"
+                    app:srcCompat="@drawable/logout"
                     android:contentDescription="-"
-                    android:onClick="Profile"
+                    android:onClick="LogOut"
                     android:background="#00000000"/>
-            </LinearLayout>
 
+                <ImageButton
+                    android:id="@+id/sort_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="#00000000"
+                    android:contentDescription="-"
+                    app:srcCompat="@drawable/sort" />
+            </LinearLayout>
         </LinearLayout>
 
-<!--        <View-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="1dp"-->
-<!--            android:background="@color/d04"-->
-<!--            android:layout_gravity="bottom|center"-->
-<!--            android:layout_row="1"/>-->
+        <!--        <View-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="1dp"-->
+        <!--            android:background="@color/d04"-->
+        <!--            android:layout_gravity="bottom|center"-->
+        <!--            android:layout_row="1"/>-->
 
         <ScrollView
             android:layout_width="match_parent"
@@ -86,20 +105,12 @@
                 android:padding="10dp">
 
                 <include
-                    layout="@layout/item_field"
-                    android:id="@+id/item_field_01"/>
+                    layout="@layout/item_track"
+                    android:id="@+id/item_track_01"/>
+
                 <include
-                    layout="@layout/item_field"
-                    android:id="@+id/item_field_02"/>
-                <include
-                    layout="@layout/item_field"
-                    android:id="@+id/item_field_03"/>
-                <include
-                    layout="@layout/item_field"
-                    android:id="@+id/item_field_04"/>
-                <include
-                    layout="@layout/item_field"
-                    android:id="@+id/item_field_05"/>
+                    layout="@layout/item_track"
+                    android:id="@+id/item_track_02"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -120,14 +131,32 @@
             android:layout_column="0">
 
             <ImageButton
-                android:id="@+id/confirm_button"
+                android:id="@+id/prev_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#00000000"
                 android:contentDescription="-"
-                android:onClick="SubmitTrack"
-                app:srcCompat="@drawable/confirm" />
+                app:srcCompat="@drawable/left" />
+
+            <ImageButton
+                android:id="@+id/add_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:contentDescription="-"
+                android:onClick="ActivityToAdd"
+                app:srcCompat="@drawable/plus" />
+
+            <ImageButton
+                android:id="@+id/next_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:contentDescription="-"
+                app:srcCompat="@drawable/right" />
         </LinearLayout>
     </GridLayout>
 

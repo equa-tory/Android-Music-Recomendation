@@ -99,7 +99,7 @@ public class AddActivity extends AppCompatActivity {
                 .getInt("user_id", -1);
         if (userId == -1) {
             Log.e("TRACK", "No user_id found in SharedPreferences");
-            return; // не продолжаем без пользователя
+            return;
         }
 
         String title = fi_title.getText().toString().trim();

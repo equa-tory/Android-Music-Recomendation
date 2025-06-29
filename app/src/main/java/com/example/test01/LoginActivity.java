@@ -87,7 +87,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Log.e("SERVER", "FAIL: " + t.getMessage());
-                // Можно показать Toast "Нет подключения"
                 Toast.makeText(getApplicationContext(), "Ошибка соединения с сервером", Toast.LENGTH_SHORT).show();
             }
         });

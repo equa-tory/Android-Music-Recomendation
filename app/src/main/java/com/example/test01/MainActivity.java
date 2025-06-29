@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 //        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         // ============================================
-        // Проверка логина
+        // Login check
         boolean isLoggedIn = getSharedPreferences("prefs", MODE_PRIVATE)
                 .getBoolean("isLoggedIn", false);
         if (!isLoggedIn) {
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             popup.show();
         });
 
-        // Загрузка списка настроений с сервера
+        // Get mood labels from server
         api.getMoods().enqueue(new Callback<List<Mood>>() {
             @Override
             public void onResponse(Call<List<Mood>> call, Response<List<Mood>> response) {
@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                         reportBtn.setTag(track.id);
                         title.setText(track.title);
 //                        description.setText(track.author + " | mood: " + track.mood);
-                        // Получаем название настроения по id через MoodLabels
+                        // get mood label via id
                         String mood = MoodLabels.getLabelById(track.mood_id);
                         description.setText(track.author + " | " + mood);
                         //
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                         String commentText = track.comment;
                         if(!commentText.isEmpty()) {
                             comment.setVisibility(VISIBLE);
-                            comment.setText("\"" +commentText+'"');
+                            comment.setText("\"" + commentText + '"');
                         }
 
                         infoBlock.setOnClickListener(v -> {
@@ -305,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
     public void Like(View v) {
         ImageButton likeBtn = (ImageButton) v;
 
-        // Получаем track_id, сохранённый ранее
+        // get track_id saved before
         Object tag = likeBtn.getTag();
         if (tag == null) {
             Toast.makeText(this, "Ошибка: нет ID трека", Toast.LENGTH_SHORT).show();
@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
     public void Unlike(View v) {
         ImageButton likeBtn = (ImageButton) v;
 
-        // Получаем track_id, сохранённый ранее
+        // get track_id saved before
         Object tag = likeBtn.getTag();
         if (tag == null) {
             Toast.makeText(this, "Ошибка: нет ID трека", Toast.LENGTH_SHORT).show();
@@ -415,7 +415,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
-        finish(); // закрываем MainActivity, чтобы не вернуться назад
+        finish(); // closing MainActivity so user couldn't come back
     }
     public void SubmitUser(View v){
         Retrofit retrofit = new Retrofit.Builder()
@@ -443,7 +443,6 @@ public class MainActivity extends AppCompatActivity {
                     //ActivityToMain(v);
                 } else if (response.code() == 401) {
                     Log.e("SERVER", "Invalid password");
-                    // Можно показать Toast или ошибку в UI
                     Toast.makeText(getApplicationContext(), "Неверный пароль", Toast.LENGTH_SHORT).show();
                     LogOut(v);
                 } else {
@@ -455,7 +454,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Log.e("SERVER", "FAIL: " + t.getMessage());
-                // Можно показать Toast "Нет подключения"
                 Toast.makeText(getApplicationContext(), "Ошибка соединения с сервером", Toast.LENGTH_SHORT).show();
             }
         });

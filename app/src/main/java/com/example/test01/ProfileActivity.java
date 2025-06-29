@@ -60,7 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
         prevBtn = findViewById(R.id.prev_button);
         nextBtn = findViewById(R.id.next_button);
         retrofit = new Retrofit.Builder()
-                .baseUrl(ServerConfig.SERVER_ADDRESS) // важно! для эмулятора Android = localhost
+                .baseUrl(ServerConfig.SERVER_ADDRESS) // server ip
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         api = retrofit.create(NetApi.class);
@@ -95,7 +95,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
         startActivity(intent);
-        finish(); // закрываем MainActivity, чтобы не вернуться назад
+        finish(); // closing MainActivity so user couldn't come back
     }
 
     public void ActivityToAdd(View v){
@@ -131,12 +131,13 @@ public class ProfileActivity extends AppCompatActivity {
                         TextView title = itemView.findViewById(R.id.title_text);
                         TextView description = itemView.findViewById(R.id.description_text);
                         TextView date = itemView.findViewById(R.id.date_text);
+                        TextView comment = itemView.findViewById(R.id.comment_text);
 
                         followBtn.setTag(track.id);
                         xButton.setTag(track.id);
 //                        followBtn.setVisibility(GONE);
                         xButton.setVisibility(VISIBLE);
-                        xButton.setVisibility(GONE);
+                        reportButton.setVisibility(GONE);
                         title.setText(track.title);
                         String mood = MoodLabels.getLabelById(track.mood_id);
                         description.setText(track.author + " | " + mood);
@@ -151,6 +152,12 @@ public class ProfileActivity extends AppCompatActivity {
                             date.setText(formattedDate);
                         } catch (ParseException e) {
                             date.setText("invalid date");
+                        }
+
+                        String commentText = track.comment;
+                        if(!commentText.isEmpty()) {
+                            comment.setVisibility(VISIBLE);
+                            comment.setText("\"" +commentText+'"');
                         }
 
                         infoBlock.setOnClickListener(v -> {
@@ -199,7 +206,7 @@ public class ProfileActivity extends AppCompatActivity {
     public void Delete(View v) {
         ImageButton btn = (ImageButton) v;
 
-        // Получаем track_id, сохранённый ранее
+        // get track_id saved before
         Object tag = btn.getTag();
         if (tag == null) {
             Toast.makeText(this, "Ошибка: нет ID трека", Toast.LENGTH_SHORT).show();
@@ -237,7 +244,7 @@ public class ProfileActivity extends AppCompatActivity {
     public void Like(View v) {
         ImageButton likeBtn = (ImageButton) v;
 
-        // Получаем track_id, сохранённый ранее
+        // get track_id saved before
         Object tag = likeBtn.getTag();
         if (tag == null) {
             Toast.makeText(this, "Ошибка: нет ID трека", Toast.LENGTH_SHORT).show();
@@ -276,7 +283,7 @@ public class ProfileActivity extends AppCompatActivity {
     public void Unlike(View v) {
         ImageButton likeBtn = (ImageButton) v;
 
-        // Получаем track_id, сохранённый ранее
+        // get track_id saved before
         Object tag = likeBtn.getTag();
         if (tag == null) {
             Toast.makeText(this, "Ошибка: нет ID трека", Toast.LENGTH_SHORT).show();

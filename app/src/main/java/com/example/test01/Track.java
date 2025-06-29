@@ -7,17 +7,17 @@ public class Track {
     public String title;
     public String author;
     public String url;
-    public int mood;
+    public int mood_id;
     public String comment;
     public String timestamp;
     public int user_id;
 
-    public Track(int id, String title, String author, String url, int mood, String comment, int user_id) {
+    public Track(int id, String title, String author, String url, int mood_id, String comment, int user_id) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.url = url;
-        this.mood = mood;
+        this.mood_id = mood_id;
         this.comment = comment;
         this.user_id = user_id;
     }

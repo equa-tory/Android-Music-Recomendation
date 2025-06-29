@@ -31,4 +31,7 @@ public interface NetApi {
 
     @POST("/delete")
     Call<Void> deleteTrack(@Body DeleteRequest request);
+
+    @GET("/moods")
+    Call<List<Mood>> getMoods();
 }

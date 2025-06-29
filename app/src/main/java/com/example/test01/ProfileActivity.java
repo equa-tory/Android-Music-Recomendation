@@ -136,9 +136,7 @@ public class ProfileActivity extends AppCompatActivity {
 //                        followBtn.setVisibility(GONE);
                         xButton.setVisibility(VISIBLE);
                         title.setText(track.title);
-//                        description.setText(track.author + " | mood: " + track.mood);
-                        String mood = "";
-                        mood = MoodLabels.labels[track.mood];
+                        String mood = MoodLabels.getLabelById(track.mood_id);
                         description.setText(track.author + " | " + mood);
                         //
                         SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

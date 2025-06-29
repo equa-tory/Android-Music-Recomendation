@@ -106,71 +106,60 @@ public class MainActivity extends AppCompatActivity {
         sortButton.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(MainActivity.this, v);
             popup.getMenu().add("Creation Date");
-//            popup.getMenu().add("By mood");// TODO redo
             popup.getMenu().add("Followed");
             popup.getMenu().add("Most popular");
             popup.getMenu().add("Music of the week");
-            for (String moodString :
-                    MoodLabels.labels) {
-                popup.getMenu().add(moodString);
+            for (Mood mood : MoodLabels.moods) {
+                popup.getMenu().add(mood.name).setIntent(new Intent().putExtra("mood_id", mood.id));
             }
 
             popup.setOnMenuItemClickListener(item -> {
-                String selected = item.getTitle().toString().toLowerCase();
-
-                // fixing the duplicates
+                String title = item.getTitle().toString().toLowerCase();
                 String lastSort = currentSort;
-                switch (selected){
-                    case "creation date": {
-                        currentSort = "none";
-                        break;
-                    }
-                    case "by mood": {
-                        currentSort = "mood";
-                        break;
-                    }
-                    case "followed": {
-                        currentSort = "followed";
-                        break;
-                    }
-                    case "most popular": {
-                        currentSort = "popular";
-                        break;
-                    }
-                    case "music of the week": {
-                        currentSort = "week";
-                        break;
-                    }
-                    case "\uD83D\uDCA5 drive": {
-                        currentSort = "mood:0";
-                        break;
-                    }
-                    case "🛋️ chill": {
-                        currentSort = "mood:1";
-                        break;
-                    }
-                    case "\uD83D\uDC94 sad": {
-                        currentSort = "mood:2";
-                        break;
-                    }
-                    case "❄ christmas": {
-                        currentSort = "mood:3";
-                        break;
-                    }
-                    case "\uD83D\uDC7B other": {
-                        currentSort = "mood:4";
-                        break;
+
+                if (title.equals("creation date")) {
+                    currentSort = "none";
+                } else if (title.equals("followed")) {
+                    currentSort = "followed";
+                } else if (title.equals("most popular")) {
+                    currentSort = "popular";
+                } else if (title.equals("music of the week")) {
+                    currentSort = "week";
+                } else {
+                    // Сортировка по mood через id
+                    Intent intent = item.getIntent();
+                    if (intent != null && intent.hasExtra("mood_id")) {
+                        int moodId = intent.getIntExtra("mood_id", -1);
+                        currentSort = "mood:" + moodId;
                     }
                 }
-//                currentSort = selected; // переменная сортировки
-                if(!Objects.equals(lastSort, currentSort)) loadPage(1, currentSort); // загружаем с первой страницы
+
+                if (!Objects.equals(lastSort, currentSort)) {
+                    loadPage(1, currentSort);
+                }
                 return true;
             });
 
             popup.show();
         });
 
-        loadPage(currentPage, currentSort);
+        // Загрузка списка настроений с сервера
+        api.getMoods().enqueue(new Callback<List<Mood>>() {
+            @Override
+            public void onResponse(Call<List<Mood>> call, Response<List<Mood>> response) {
+                if (response.isSuccessful()) {
+                    MoodLabels.moods = response.body();
+                    loadPage(currentPage, currentSort);
+                } else {
+                    Log.e("MOOD", "Response code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Mood>> call, Throwable t) {
+                Log.e("MOOD", "Failed: " + t.getMessage());
+            }
+        });
     }
 
     public void loadPage(int page, String sortingType) {
@@ -197,8 +186,8 @@ public class MainActivity extends AppCompatActivity {
                         followBtn.setTag(track.id);
                         title.setText(track.title);
 //                        description.setText(track.author + " | mood: " + track.mood);
-                        String mood = "";
-                        mood = MoodLabels.labels[track.mood];
+                        // Получаем название настроения по id через MoodLabels
+                        String mood = MoodLabels.getLabelById(track.mood_id);
                         description.setText(track.author + " | " + mood);
                         //
                         SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

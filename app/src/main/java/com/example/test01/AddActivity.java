@@ -22,6 +22,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,9 +65,10 @@ public class AddActivity extends AppCompatActivity {
         fieldItemMood.findViewById(R.id.field_edittext).setVisibility(GONE);
         spinner.setVisibility(VISIBLE);
         //
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, MoodLabels.labels);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, MoodLabels.getLabels());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
 
         TextView fi_comment_title = fieldItemComment.findViewById(R.id.field_title);
         fi_comment_title.setText("Comment*");
